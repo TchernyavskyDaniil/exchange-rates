@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function App() {
-  return <div className="App">Hello world</div>;
+import { Header } from './layout/Header';
+import { Main } from './layout/Main';
+
+class App extends Component {
+  componentDidCatch(error, errorInfo) {
+    console.log(error, errorInfo)
+  }
+
+  render() {
+    return (
+      <>
+        <Header />
+        <Main />
+      </>
+    );
+  }
 }
 
 export default App;
