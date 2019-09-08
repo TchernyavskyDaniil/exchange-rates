@@ -5,7 +5,7 @@ import { Main } from './layout/Main';
 
 class App extends Component {
   componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo)
+    console.log(error, errorInfo);
   }
 
   render() {

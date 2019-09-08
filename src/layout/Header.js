@@ -20,7 +20,7 @@ const LinkToSource = styled.a`
   font-size: 24px;
   transition: 0.4s ease color;
   padding: 20px 0;
-  
+
   &:hover {
     color: slateblue;
   }
@@ -30,16 +30,22 @@ const LinkToAPI = styled(LinkToSource)`
   padding: 0;
 `;
 
-const linkToSource = 'Link to source'
+const linkToSource = 'Link to source';
 
-const linkToAPIDoc = 'API Documentation'
+const linkToAPIDoc = 'API Documentation';
 
 export const Header = () => (
   <HeaderView>
     <Title> Simple React exchange rates</Title>
-    <LinkToSource href="https://github.com/TchernyavskyDaniil/exchange-rates" target="_blank" title={linkToSource}>
+    <LinkToSource
+      href="https://github.com/TchernyavskyDaniil/exchange-rates"
+      target="_blank"
+      title={linkToSource}>
       {linkToSource}
     </LinkToSource>
-    <LinkToAPI href="https://ratesapi.io/documentation/" title={linkToAPIDoc}> {linkToAPIDoc} </LinkToAPI>
+    <LinkToAPI href="https://ratesapi.io/documentation/" title={linkToAPIDoc}>
+      {' '}
+      {linkToAPIDoc}{' '}
+    </LinkToAPI>
   </HeaderView>
 );
