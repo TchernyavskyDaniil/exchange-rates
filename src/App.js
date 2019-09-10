@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import Header from './layout/Header'
 import Main from './layout/Main'
+
+const ErrorDesc = styled.p`
+  margin: 40px;
+  text-align: center;
+  font-size: 24px;
+  line-height: 26px;
+`
 
 class App extends Component {
   state = {
@@ -17,7 +25,7 @@ class App extends Component {
     const { errorInfo, isError } = this.state
 
     if (isError) {
-      return <h1> {errorInfo} </h1>
+      return <ErrorDesc> {errorInfo} </ErrorDesc>
     }
 
     return (
