@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
 const HeaderView = styled.header`
   background-color: lightcyan;
@@ -8,11 +8,11 @@ const HeaderView = styled.header`
   flex-direction: column;
   align-items: center;
   padding: 20px 0;
-`;
+`
 
 const Title = styled.h1`
   margin: 0;
-`;
+`
 
 const LinkToSource = styled.a`
   text-decoration: none;
@@ -24,15 +24,15 @@ const LinkToSource = styled.a`
   &:hover {
     color: slateblue;
   }
-`;
+`
 
 const LinkToAPI = styled(LinkToSource)`
   padding: 0;
-`;
+`
 
-const linkToSource = 'Link to source';
+const linkToSource = 'Link to source'
 
-const linkToAPIDoc = 'API Documentation';
+const linkToAPIDoc = 'API Documentation'
 
 export const Header = () => (
   <HeaderView>
@@ -40,7 +40,8 @@ export const Header = () => (
     <LinkToSource
       href="https://github.com/TchernyavskyDaniil/exchange-rates"
       target="_blank"
-      title={linkToSource}>
+      title={linkToSource}
+    >
       {linkToSource}
     </LinkToSource>
     <LinkToAPI href="https://ratesapi.io/documentation/" title={linkToAPIDoc}>
@@ -48,4 +49,4 @@ export const Header = () => (
       {linkToAPIDoc}{' '}
     </LinkToAPI>
   </HeaderView>
-);
+)
