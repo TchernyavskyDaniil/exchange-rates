@@ -34,7 +34,7 @@ const linkToSource = 'Link to source'
 
 const linkToAPIDoc = 'API Documentation'
 
-export const Header = () => (
+const Header = () => (
   <HeaderView>
     <Title> Simple React exchange rates</Title>
     <LinkToSource
@@ -50,3 +50,5 @@ export const Header = () => (
     </LinkToAPI>
   </HeaderView>
 )
+
+export default Header
