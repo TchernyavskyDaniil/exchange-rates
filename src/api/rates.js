@@ -1,10 +1,8 @@
-import root from './config';
+import root from './config'
 
 /**
  * Get actual exchange rates
  * @param options {Object<string>}
- * @param query {string}
  * @returns {Promise<Object>}
  */
-export const requestRates = (query = '', options = {}) =>
-  root.get(`latest${query}`, options).then(res => res.json());
+export const requestRates = (options = {}) => root.get('latest', options).then(res => res.json())

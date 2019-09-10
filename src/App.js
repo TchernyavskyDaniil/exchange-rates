@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import { Header } from './layout/Header';
-import { Main } from './layout/Main';
+import { Header } from './layout/Header'
+import { Main } from './layout/Main'
 
 class App extends Component {
   componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo);
+    console.log(error, errorInfo)
   }
 
   render() {
@@ -14,8 +14,8 @@ class App extends Component {
         <Header />
         <Main />
       </>
-    );
+    )
   }
 }
 
-export default App;
+export default App

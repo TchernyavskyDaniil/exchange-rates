@@ -6,7 +6,7 @@
  * @returns {string}
  */
 export function getDate(date, options = {}, isNewDate = false) {
-  const newDate = isNewDate ? date : new Date(date);
+  const newDate = isNewDate ? date : new Date(date)
 
-  return newDate.toLocaleString('ru', options);
+  return newDate.toLocaleString('ru', options)
 }
