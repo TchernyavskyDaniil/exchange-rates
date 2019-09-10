@@ -24,6 +24,7 @@
     "semi": "off",
     "no-shadow": "off",
     "no-console": "warn",
+    "no-restricted-globals": "warn",
     "prefer-template": "error",
     "import/no-unresolved": "error",
     "import/prefer-default-export": "off",

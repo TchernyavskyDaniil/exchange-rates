@@ -4,7 +4,7 @@ import { FromContainer, Input } from './styles'
 import { types } from './reducer'
 import { requestRates } from '../../api/rates'
 import RateSelect from './RateSelect'
-import { checkIsFloatAndFixed } from '../../lib/helpers'
+import { checkIsFloatAndFixed, isWrongValue } from '../../lib/helpers'
 import { defaultRateTypes, propTypesRate } from './types'
 
 const FromRate = ({
@@ -18,6 +18,8 @@ const FromRate = ({
 }) => {
   const changeFromValue = useCallback(
     function({ target: { value } }) {
+      if (isWrongValue(value)) return
+
       const numberValue = checkIsFloatAndFixed(value, true)
       const newCurrencyValue = checkIsFloatAndFixed(toCurrencyValue.rate * numberValue, true)
 

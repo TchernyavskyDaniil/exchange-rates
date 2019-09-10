@@ -37,3 +37,12 @@ export function checkIsFloatAndFixed(n, isFixed = false) {
 
   return +n
 }
+
+/**
+ * Checking is value valid for rates
+ * @param val {number}
+ * @returns {boolean}
+ */
+export function isWrongValue(val) {
+  return isNaN(val) || Math.sign(val) === -1
+}
