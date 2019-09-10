@@ -1,185 +1,135 @@
-import React, { useEffect, useReducer, useCallback } from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useReducer, useCallback, useMemo } from 'react'
 
 import { requestRates } from '../../api/rates'
-import { getDate } from '../../lib/helpers'
+import { getDate, checkIsFloatAndFixed } from '../../lib/helpers'
 import constants from '../../constants'
 import { initialState, reducer, types } from './reducer'
+import { Rates, RateInfo, RateDate, ErrorDesc, DescRates } from './styles'
+import FromRate from './FromRate'
+import ToRate from './ToRate'
+import Preloader from '../Preloader'
 
-const RateDate = styled.span``
-
-const Rate = styled.select``
-
-const Option = styled.option``
-
-const Input = styled.input`
-  min-width: 100px;
-`
-
-export const ExchangeRates = () => {
+const ExchangeRates = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { latestRates, latestCurrencies, latestDate, fromCurrencyValue, toCurrencyValue } = state
+  const {
+    latestCurrencies,
+    latestDate,
+    fromCurrencyValue,
+    toCurrencyValue,
+    error: { textError, statusError },
+    isLoading,
+  } = state
+
+  const dispatchError = useCallback(function(error = null) {
+    dispatch({
+      type: types.SET_ERROR,
+      errorInfo: {
+        error: {
+          textError: error || constants.DEFAULT_ERROR_NETWORK,
+          statusError: true,
+        },
+        isLoading: false,
+      },
+    })
+  }, [])
 
   useEffect(function() {
     requestRates({
       searchParams: {
         base: constants.FROM_CURRENCY,
       },
-    }).then(function({ rates, date }) {
-      const rateDate = getDate(date, constants.DEFAULT_DATE_OPTIONS)
-      const arrRates = Object.entries(rates)
-      let fromCurrency = {}
-      let toCurrency = {}
-      const currencies = []
-
-      arrRates.forEach((data, key) => {
-        const currency = data[0]
-        const value = +data[1]
-
-        if (currency === constants.FROM_CURRENCY) {
-          fromCurrency = { currency, value, rate: value }
-        } else if (currency === constants.TO_CURRENCY) {
-          toCurrency = { currency, value, rate: value }
+    })
+      .then(function({ rates, date, error }) {
+        if (error) {
+          return dispatchError(error)
         }
 
-        // no id from API
-        currencies.push({ currency, id: key })
-      })
+        const rateDate = getDate(date, constants.DEFAULT_DATE_OPTIONS)
+        let fromCurrency = {}
+        let toCurrency = {}
+        const currencies = []
 
-      dispatch({
-        type: types.UPDATE_ALL,
-        updatedAll: {
-          latestRates: arrRates,
-          latestDate: rateDate,
-          latestCurrencies: currencies,
-          fromCurrencyValue: fromCurrency,
-          toCurrencyValue: toCurrency,
-        },
+        Object.entries(rates).forEach((data, key) => {
+          const currency = data[0]
+          const value = checkIsFloatAndFixed(data[1], true)
+
+          if (currency === constants.FROM_CURRENCY) {
+            fromCurrency = { currency, value, rate: value }
+          } else if (currency === constants.TO_CURRENCY) {
+            toCurrency = { currency, value, rate: value }
+          }
+
+          // no id from API
+          currencies.push({ currency, id: key })
+        })
+
+        return dispatch({
+          type: types.UPDATE_ALL,
+          updatedAll: {
+            latestDate: rateDate,
+            latestCurrencies: currencies,
+            fromCurrencyValue: fromCurrency,
+            toCurrencyValue: toCurrency,
+            isLoading: false,
+          },
+        })
       })
-    })
+      .catch(dispatchError)
   }, [])
 
-  const updateDate = useCallback(date => {
-    const newDate = getDate(date, constants.DEFAULT_DATE_OPTIONS)
+  const updateDate = useCallback(
+    date => {
+      const newDate = getDate(date, constants.DEFAULT_DATE_OPTIONS)
 
-    if (newDate !== latestDate) {
-      dispatch({ type: types.SET_LATEST_DATE, latestDate: newDate })
-    }
-  }, [latestDate])
-
-  const changeFromCurrency = useCallback(
-    function({ target: { value: currency } }) {
-      requestRates({
-        searchParams: {
-          base: currency,
-          symbols: toCurrencyValue.currency,
-        },
-      }).then(function({ rates, date }) {
-        const { currency: toCurrency } = toCurrencyValue
-        const rate = +rates[toCurrency]
-
-        updateDate(date)
-        dispatch({
-          type: types.UPDATE_CURRENCY,
-          updatedCurrency: {
-            fromCurrencyValue: {
-              ...fromCurrencyValue,
-              currency,
-            },
-            toCurrencyValue: {
-              value: fromCurrencyValue.value * rate,
-              currency: toCurrency,
-              rate,
-            },
-          },
-        })
-      })
+      if (newDate !== latestDate) {
+        dispatch({ type: types.SET_LATEST_DATE, latestDate: newDate })
+      }
     },
-    [fromCurrencyValue, toCurrencyValue, updateDate],
+    [latestDate],
   )
 
-  const changeToCurrency = useCallback(
-    function({ target: { value: currency } }) {
-      requestRates({
-        searchParams: {
-          base: fromCurrencyValue.currency,
-          symbols: currency,
-        },
-      }).then(function({ rates, date }) {
-        const rate = +rates[currency]
+  const rateProps = {
+    dispatch,
+    toCurrencyValue,
+    updateDate,
+    fromCurrencyValue,
+    latestCurrencies,
+    isError: statusError,
+    dispatchError,
+  }
 
-        updateDate(date)
-        dispatch({
-          type: types.UPDATE_CURRENCY,
-          updatedCurrency: {
-            fromCurrencyValue,
-            toCurrencyValue: { currency, value: rate * fromCurrencyValue.value, rate },
-          },
-        })
-      })
+  const renderDescRates = useMemo(
+    function() {
+      return (
+        !statusError &&
+        fromCurrencyValue.value &&
+        toCurrencyValue.value && (
+          <DescRates>
+            {fromCurrencyValue.value} = {toCurrencyValue.value}
+          </DescRates>
+        )
+      )
     },
-    [fromCurrencyValue, updateDate],
-  )
-
-  const changeFromValue = useCallback(
-    function({ target: { value } }) {
-      const numberValue = +value
-      dispatch({
-        type: types.UPDATE_CURRENCY,
-        updatedCurrency: {
-          fromCurrencyValue: {
-            ...fromCurrencyValue,
-            value: numberValue,
-          },
-          toCurrencyValue: {
-            ...toCurrencyValue,
-            value: toCurrencyValue.rate * numberValue,
-          },
-        },
-      })
-    },
-    [fromCurrencyValue, toCurrencyValue],
-  )
-
-  const changeToValue = useCallback(
-    function({ target: { value } }) {
-      const numberValue = +value
-      dispatch({
-        type: types.UPDATE_CURRENCY,
-        updatedCurrency: {
-          fromCurrencyValue: {
-            ...fromCurrencyValue,
-            value: numberValue / toCurrencyValue.rate,
-          },
-          toCurrencyValue: {
-            ...toCurrencyValue,
-            value: numberValue,
-          },
-        },
-      })
-    },
-    [fromCurrencyValue, toCurrencyValue],
+    [statusError, fromCurrencyValue.value, toCurrencyValue.value],
   )
 
   return (
-    <>
-      <RateDate> {latestDate} </RateDate>
-      <Input value={fromCurrencyValue.value} onChange={changeFromValue} />
-      <Rate value={fromCurrencyValue.currency} onChange={changeFromCurrency}>
-        {latestCurrencies.map(({ currency, id }) => (
-          <Option value={currency} key={id}>
-            {currency}
-          </Option>
-        ))}
-      </Rate>
-      <Input value={toCurrencyValue.value} onChange={changeToValue} />
-      <Rate value={toCurrencyValue.currency} onChange={changeToCurrency}>
-        {latestCurrencies.map(({ currency, id }) => (
-          <Option value={currency} key={id}>
-            {currency}
-          </Option>
-        ))}
-      </Rate>
-    </>
+    <Rates>
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <>
+          <RateInfo>
+            <RateDate> {latestDate} </RateDate>
+            {statusError && <ErrorDesc> {textError} </ErrorDesc>}
+          </RateInfo>
+          <FromRate {...rateProps} />
+          <ToRate {...rateProps} />
+          {renderDescRates}
+        </>
+      )}
+    </Rates>
   )
 }
+
+export default ExchangeRates
