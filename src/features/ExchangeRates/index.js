@@ -98,13 +98,20 @@ const ExchangeRates = () => {
     dispatchError,
   }
 
-  const renderDescRates = useMemo(function() {
-    return !statusError && fromCurrencyValue.value && toCurrencyValue.value && (
-      <DescRates>
-        {fromCurrencyValue.value} = {toCurrencyValue.value}
-      </DescRates>
-    )
-  }, [statusError, fromCurrencyValue.value, toCurrencyValue.value])
+  const renderDescRates = useMemo(
+    function() {
+      return (
+        !statusError &&
+        fromCurrencyValue.value &&
+        toCurrencyValue.value && (
+          <DescRates>
+            {fromCurrencyValue.value} = {toCurrencyValue.value}
+          </DescRates>
+        )
+      )
+    },
+    [statusError, fromCurrencyValue.value, toCurrencyValue.value],
+  )
 
   return (
     <Rates>

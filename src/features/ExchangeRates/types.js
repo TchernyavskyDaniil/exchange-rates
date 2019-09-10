@@ -23,5 +23,5 @@ export const propTypesRate = {
   fromCurrencyValue: currencyTypes,
   latestCurrencies: PT.array,
   isError: PT.bool,
-  dispatchError: PT.func
+  dispatchError: PT.func,
 }

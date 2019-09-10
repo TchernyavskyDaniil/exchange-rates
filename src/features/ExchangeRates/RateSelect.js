@@ -25,10 +25,12 @@ RateSelect.propTypes = {
   value: PT.string,
   onChange: PT.func,
   isDisabled: PT.bool,
-  options: PT.arrayOf(PT.shape({
-    currency: PT.string,
-    id: PT.number
-  })),
+  options: PT.arrayOf(
+    PT.shape({
+      currency: PT.string,
+      id: PT.number,
+    }),
+  ),
   disabledOption: PT.string,
 }
 
