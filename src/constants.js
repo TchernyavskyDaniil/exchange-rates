@@ -10,7 +10,7 @@ const TO_CURRENCY = 'RUB'
 
 const DEFAULT_ERROR_NETWORK = 'Произошла ошибка при соединении с RATES API'
 
-const DEFAULT_DECIMAL_PLACES = 5
+const DEFAULT_DECIMAL_PLACES = 3
 
 export default {
   DEFAULT_DATE_OPTIONS,
