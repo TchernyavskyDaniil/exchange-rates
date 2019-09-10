@@ -5,5 +5,4 @@ import root from './config'
  * @param options {Object<string>}
  * @returns {Promise<Object>}
  */
-export const requestRates = (query = '', options = {}) =>
-  root.get(`latest${query}`, options).then(res => res.json())
+export const requestRates = (options = {}) => root.get('latest', options).then(res => res.json())

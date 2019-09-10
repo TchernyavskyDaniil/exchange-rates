@@ -6,11 +6,13 @@ export const initialState = {
   latestCurrencies: [],
   fromCurrencyValue: {
     currency: constants.TO_CURRENCY,
-    value: 0,
+    value: 1,
+    rate: 1,
   },
   toCurrencyValue: {
     currency: constants.FROM_CURRENCY,
-    value: 0,
+    value: 1,
+    rate: 1,
   },
 }
 
