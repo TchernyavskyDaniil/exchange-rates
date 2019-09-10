@@ -5,12 +5,12 @@ export const initialState = {
   latestCurrencies: [],
   fromCurrencyValue: {
     currency: constants.TO_CURRENCY,
-    value: '',
+    value: 1,
     rate: 1,
   },
   toCurrencyValue: {
     currency: constants.FROM_CURRENCY,
-    value: '',
+    value: 1,
     rate: 1,
   },
   error: {
@@ -38,7 +38,7 @@ export const reducer = (state, action) => {
     case types.UPDATE_ALL:
       return { ...state, ...updatedAll }
     case types.SET_ERROR:
-      return { ...state, ...errorInfo }
+      return { ...state, ...errorInfo, ...state }
     default:
       return state
   }

@@ -35,5 +35,5 @@ export function checkIsFloatAndFixed(n, isFixed = false) {
     return toFixedDefault(n)
   }
 
-  return n
+  return +n
 }

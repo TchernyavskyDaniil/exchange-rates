@@ -33,6 +33,10 @@ const ExchangeRates = () => {
     })
   }, [])
 
+  const getRates = () => {
+
+  }
+
   useEffect(function() {
     requestRates({
       searchParams: {
@@ -103,11 +107,11 @@ const ExchangeRates = () => {
       return (
         !statusError &&
         fromCurrencyValue.value &&
-        toCurrencyValue.value && (
+        toCurrencyValue.value ? (
           <DescRates>
             {fromCurrencyValue.value} = {toCurrencyValue.value}
           </DescRates>
-        )
+        ) : <DescRates emptyFields> Заполните поля </DescRates>
       )
     },
     [statusError, fromCurrencyValue.value, toCurrencyValue.value],
