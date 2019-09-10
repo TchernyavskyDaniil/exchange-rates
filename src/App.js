@@ -22,8 +22,7 @@ class App extends Component {
   }
 
   render() {
-    const { errorInfo,
-      isError } = this.state
+    const { errorInfo, isError } = this.state
 
     if (isError) {
       return <ErrorDesc> {errorInfo} </ErrorDesc>
