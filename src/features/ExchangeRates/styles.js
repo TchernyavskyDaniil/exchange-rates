@@ -32,6 +32,9 @@ export const FromContainer = styled.div`
   margin-top: 20px;
 `
 
-export const DescRates = styled.p``
+export const DescRates = styled.p`
+  margin-top: 20px;
+  color: ${({ emptyFields }) => (emptyFields ? 'red' : 'black')};
+`
 
 export const ToContainer = styled(FromContainer)``

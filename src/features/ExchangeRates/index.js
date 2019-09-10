@@ -100,14 +100,12 @@ const ExchangeRates = () => {
 
   const renderDescRates = useMemo(
     function() {
-      return (
-        !statusError &&
-        fromCurrencyValue.value &&
-        toCurrencyValue.value && (
-          <DescRates>
-            {fromCurrencyValue.value} = {toCurrencyValue.value}
-          </DescRates>
-        )
+      return !statusError && fromCurrencyValue.value && toCurrencyValue.value ? (
+        <DescRates>
+          {fromCurrencyValue.value} = {toCurrencyValue.value}
+        </DescRates>
+      ) : (
+        <DescRates emptyFields> Заполните поля </DescRates>
       )
     },
     [statusError, fromCurrencyValue.value, toCurrencyValue.value],

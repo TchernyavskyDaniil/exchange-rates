@@ -1,17 +1,25 @@
-import React, { memo } from 'react'
+import React, { useMemo } from 'react'
 import PT from 'prop-types'
 
 import { Option, Rate } from './styles'
 
-const RateSelect = ({ value, onChange, isDisabled, options, disabledOption }) => (
-  <Rate value={value} onChange={onChange} disabled={isDisabled}>
-    {options.map(({ currency, id }) => (
-      <Option value={currency} key={id} disabled={currency === disabledOption}>
-        {currency}
-      </Option>
-    ))}
-  </Rate>
-)
+const RateSelect = ({ value, onChange, isDisabled, options, disabledOption }) => {
+  const renderOptions = useMemo(
+    function() {
+      return options.map(({ currency, id }) => (
+        <Option value={currency} key={id} disabled={currency === disabledOption}>
+          {currency}
+        </Option>
+      ))
+    },
+    [options, disabledOption],
+  )
+  return (
+    <Rate value={value} onChange={onChange} disabled={isDisabled}>
+      {renderOptions}
+    </Rate>
+  )
+}
 
 RateSelect.defaultProps = {
   value: '',
@@ -34,6 +42,4 @@ RateSelect.propTypes = {
   disabledOption: PT.string,
 }
 
-export default memo(RateSelect, function areEqual(prevProps, nextProps) {
-  return prevProps.value === nextProps.value || prevProps.isDisabled !== nextProps.isDisabled
-})
+export default RateSelect
