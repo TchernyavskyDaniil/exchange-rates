@@ -22,14 +22,13 @@ export function toFixedDefault(value) {
   return +value.toFixed(constants.DEFAULT_DECIMAL_PLACES)
 }
 
-
 /**
  * Checking, is number is Float
  * @param n {number}
  * @param isFixed {boolean}
  * @returns {number}
  */
-export function checkIsFloatAndFixed(n, isFixed = false){
+export function checkIsFloatAndFixed(n, isFixed = false) {
   const float = Number(n) === n && n % 1 !== 0
 
   if (float && isFixed) {
