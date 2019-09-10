@@ -4,15 +4,16 @@ import PT from 'prop-types'
 import { Option, Rate } from './styles'
 
 const RateSelect = ({ value, onChange, isDisabled, options, disabledOption }) => {
-  const renderOptions = useMemo(function() {
-    return (
-      options.map(({ currency, id }) => (
+  const renderOptions = useMemo(
+    function() {
+      return options.map(({ currency, id }) => (
         <Option value={currency} key={id} disabled={currency === disabledOption}>
           {currency}
         </Option>
       ))
-    )
-  }, [options, disabledOption])
+    },
+    [options, disabledOption],
+  )
   return (
     <Rate value={value} onChange={onChange} disabled={isDisabled}>
       {renderOptions}

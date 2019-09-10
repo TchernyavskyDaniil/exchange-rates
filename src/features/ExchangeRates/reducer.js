@@ -38,7 +38,7 @@ export const reducer = (state, action) => {
     case types.UPDATE_ALL:
       return { ...state, ...updatedAll }
     case types.SET_ERROR:
-      return { ...state, ...errorInfo, ...state }
+      return { ...state, ...errorInfo }
     default:
       return state
   }
