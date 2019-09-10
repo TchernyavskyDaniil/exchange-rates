@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useCallback } from 'react'
+import React, { useEffect, useReducer, useCallback, useMemo } from 'react'
 
 import { requestRates } from '../../api/rates'
 import { getDate, checkIsFloatAndFixed } from '../../lib/helpers'
@@ -98,6 +98,14 @@ const ExchangeRates = () => {
     dispatchError,
   }
 
+  const renderDescRates = useMemo(function() {
+    return !statusError && fromCurrencyValue.value && toCurrencyValue.value && (
+      <DescRates>
+        {fromCurrencyValue.value} = {toCurrencyValue.value}
+      </DescRates>
+    )
+  }, [statusError, fromCurrencyValue.value, toCurrencyValue.value])
+
   return (
     <Rates>
       {isLoading ? (
@@ -110,11 +118,7 @@ const ExchangeRates = () => {
           </RateInfo>
           <FromRate {...rateProps} />
           <ToRate {...rateProps} />
-          {!statusError && (
-            <DescRates>
-              {fromCurrencyValue.value} = {toCurrencyValue.value}
-            </DescRates>
-          )}
+          {renderDescRates}
         </>
       )}
     </Rates>

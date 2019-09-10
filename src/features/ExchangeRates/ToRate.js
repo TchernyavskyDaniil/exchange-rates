@@ -4,8 +4,8 @@ import { requestRates } from '../../api/rates'
 import { types } from './reducer'
 import { ToContainer, Input } from './styles'
 import RateSelect from './RateSelect'
-import constants from '../../constants'
 import { checkIsFloatAndFixed } from '../../lib/helpers'
+import { defaultRateTypes, propTypesRate } from './types'
 
 const ToRate = ({
   dispatch,
@@ -72,9 +72,14 @@ const ToRate = ({
         onChange={changeToCurrency}
         isDisabled={isError}
         options={latestCurrencies}
+        disabledOption={fromCurrencyValue.currency}
       />
     </ToContainer>
   )
 }
+
+ToRate.defaultProps = defaultRateTypes
+
+ToRate.propTypes = propTypesRate
 
 export default ToRate

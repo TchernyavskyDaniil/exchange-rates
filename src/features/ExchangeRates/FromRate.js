@@ -5,6 +5,7 @@ import { types } from './reducer'
 import { requestRates } from '../../api/rates'
 import RateSelect from './RateSelect'
 import { checkIsFloatAndFixed } from '../../lib/helpers'
+import { defaultRateTypes, propTypesRate } from './types'
 
 const FromRate = ({
   dispatch,
@@ -79,9 +80,14 @@ const FromRate = ({
         onChange={changeFromCurrency}
         isDisabled={isError}
         options={latestCurrencies}
+        disabledOption={toCurrencyValue.currency}
       />
     </FromContainer>
   )
 }
+
+FromRate.defaultProps = defaultRateTypes
+
+FromRate.propTypes = propTypesRate
 
 export default FromRate
