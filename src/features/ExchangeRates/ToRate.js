@@ -5,6 +5,7 @@ import { types } from './reducer'
 import { ToContainer, Input } from './styles'
 import RateSelect from './RateSelect'
 import constants from '../../constants'
+import { checkIsFloatAndFixed } from '../../lib/helpers'
 
 const ToRate = ({
   dispatch,
@@ -24,14 +25,15 @@ const ToRate = ({
         },
       })
         .then(function({ rates, date }) {
-          const rate = +rates[currency]
+          const rate = checkIsFloatAndFixed(rates[currency], true)
+          const newCurrencyValue = checkIsFloatAndFixed(rate * fromCurrencyValue.value, true)
 
           updateDate(date)
           dispatch({
             type: types.UPDATE_CURRENCY,
             updatedCurrency: {
               fromCurrencyValue,
-              toCurrencyValue: { currency, value: rate * fromCurrencyValue.value, rate },
+              toCurrencyValue: { currency, value: newCurrencyValue, rate },
             },
           })
         })
@@ -42,14 +44,15 @@ const ToRate = ({
 
   const changeToValue = useCallback(
     function({ target: { value } }) {
-      const numberValue = +value
+      const numberValue = checkIsFloatAndFixed(value, true)
+      const newCurrencyValue = checkIsFloatAndFixed(numberValue / toCurrencyValue.rate, true)
 
       dispatch({
         type: types.UPDATE_CURRENCY,
         updatedCurrency: {
           fromCurrencyValue: {
             ...fromCurrencyValue,
-            value: numberValue / toCurrencyValue.rate,
+            value: newCurrencyValue,
           },
           toCurrencyValue: {
             ...toCurrencyValue,

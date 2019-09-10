@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useCallback } from 'react'
 
 import { requestRates } from '../../api/rates'
-import { getDate } from '../../lib/helpers'
+import { getDate, checkIsFloatAndFixed } from '../../lib/helpers'
 import constants from '../../constants'
 import { initialState, reducer, types } from './reducer'
 import { Rates, RateInfo, RateDate, ErrorDesc, DescRates } from './styles'
@@ -51,7 +51,7 @@ const ExchangeRates = () => {
 
         Object.entries(rates).forEach((data, key) => {
           const currency = data[0]
-          const value = +data[1]
+          const value = checkIsFloatAndFixed(data[1], true)
 
           if (currency === constants.FROM_CURRENCY) {
             fromCurrency = { currency, value, rate: value }

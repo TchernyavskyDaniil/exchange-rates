@@ -4,7 +4,7 @@ import { FromContainer, Input } from './styles'
 import { types } from './reducer'
 import { requestRates } from '../../api/rates'
 import RateSelect from './RateSelect'
-import constants from '../../constants'
+import { checkIsFloatAndFixed } from '../../lib/helpers'
 
 const FromRate = ({
   dispatch,
@@ -17,7 +17,8 @@ const FromRate = ({
 }) => {
   const changeFromValue = useCallback(
     function({ target: { value } }) {
-      const numberValue = +value
+      const numberValue = checkIsFloatAndFixed(value, true)
+      const newCurrencyValue = checkIsFloatAndFixed(toCurrencyValue.rate * numberValue, true)
 
       dispatch({
         type: types.UPDATE_CURRENCY,
@@ -28,7 +29,7 @@ const FromRate = ({
           },
           toCurrencyValue: {
             ...toCurrencyValue,
-            value: toCurrencyValue.rate * numberValue,
+            value: newCurrencyValue,
           },
         },
       })
@@ -46,7 +47,8 @@ const FromRate = ({
       })
         .then(function({ rates, date }) {
           const { currency: toCurrency } = toCurrencyValue
-          const rate = +rates[toCurrency]
+          const rate = checkIsFloatAndFixed(rates[toCurrency], true)
+          const newCurrencyValue = checkIsFloatAndFixed(fromCurrencyValue.value * rate, true)
 
           updateDate(date)
           dispatch({
@@ -57,7 +59,7 @@ const FromRate = ({
                 currency,
               },
               toCurrencyValue: {
-                value: fromCurrencyValue.value * rate,
+                value: newCurrencyValue,
                 currency: toCurrencyValue.currency,
                 rate,
               },
